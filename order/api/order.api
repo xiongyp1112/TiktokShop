@@ -1,0 +1,69 @@
+syntax = "v1"
+
+info (
+	title:  "Order API"
+	desc:   "订单 API"
+	author: "your_name"
+	email:  "your_email@example.com"
+)
+
+type (
+	Address {
+		StreetAddress string `json:"street_address"`
+		City          string `json:"city"`
+		State         string `json:"state"`
+		Country       string `json:"country"`
+		ZipCode       int32  `json:"zip_code"`
+	}
+
+	OrderItem {
+		ProductId uint32  `json:"product_id"`
+		Quantity  int32   `json:"quantity"`
+		Cost      float64 `json:"cost"`
+	}
+
+	PlaceOrderReq {
+		UserId       uint32      `json:"user_id"`
+		UserCurrency string      `json:"user_currency"`
+		Address      Address     `json:"address"`
+		Email        string      `json:"email"`
+		OrderItems   []OrderItem `json:"order_items"`
+	}
+	PlaceOrderResp {
+		OrderId string `json:"order_id"`
+	}
+
+	ListOrderReq {
+		UserId uint32 `json:"user_id"`
+	}
+	ListOrderResp {
+		Orders []Order `json:"orders"`
+	}
+
+	Order {
+		OrderId      string      `json:"order_id"`
+		UserId       uint32      `json:"user_id"`
+		UserCurrency string      `json:"user_currency"`
+		Address      Address     `json:"address"`
+		Email        string      `json:"email"`
+		CreatedAt    int64       `json:"created_at"`
+		OrderItems   []OrderItem `json:"order_items"`
+	}
+
+	MarkOrderPaidReq {
+		UserId  uint32 `json:"user_id"`
+		OrderId string `json:"order_id"`
+	}
+	MarkOrderPaidResp {}
+)
+
+service OrderService {
+	@handler PlaceOrder
+	post /api/order/place (PlaceOrderReq) returns (PlaceOrderResp)
+
+	@handler ListOrder
+	get /api/order/list (ListOrderReq) returns (ListOrderResp)
+
+	@handler MarkOrderPaid
+	post /api/order/mark_paid (MarkOrderPaidReq) returns (MarkOrderPaidResp)
+}

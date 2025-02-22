@@ -1,0 +1,37 @@
+syntax = "v1"
+
+info (
+	title:  "user_api"
+	desc:   "user_api"
+	author: "“xyp”"
+	email:  "870255728@qq.com"
+)
+
+type (
+	// 用户注册
+	RegisterRequest {
+		Email           string `json:"email"`
+		Password        string `json:"password"`
+		ConfirmPassword string `json:"confirm_password"`
+	}
+	RegisterResponse {
+		UserId int32 `json:"user_id"`
+	}
+	// 用户登录
+	LoginRequest {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	LoginResponse {
+		UserId int32 `json:"user_id"`
+	}
+)
+
+service User {
+	@handler Register
+	post /api/user/register (RegisterRequest) returns (RegisterResponse)
+
+	@handler Login
+	post /api/user/login (LoginRequest) returns (LoginResponse)
+}
+

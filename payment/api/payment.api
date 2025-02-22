@@ -1,0 +1,35 @@
+syntax = "v1"
+
+info (
+	title:  "Payment API"
+	desc:   "支付 API"
+	author: "xyp"
+	email:  "870255728@qq.com"
+)
+
+type (
+	// 信用卡信息
+	CreditCardInfo {
+		CreditCardNumber          string `json:"creditCardNumber"`
+		CreditCardCvv             int32  `json:"creditCardCvv"`
+		CreditCardExpirationYear  int32  `json:"creditCardExpirationYear"`
+		CreditCardExpirationMonth int32  `json:"creditCardExpirationMonth"`
+	}
+	// 付款请求
+	ChargeRequest {
+		Amount     float64        `json:"amount"`
+		CreditCard CreditCardInfo `json:"creditCard"`
+		OrderId    string         `json:"orderId"`
+		UserId     uint32         `json:"userId"`
+	}
+	// 付款响应
+	ChargeResponse {
+		TransactionId string `json:"transactionId"`
+	}
+)
+
+service Payment {
+	@handler Charge
+	post /api/payment/charge (ChargeRequest) returns (ChargeResponse)
+}
+

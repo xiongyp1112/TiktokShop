@@ -1,0 +1,48 @@
+syntax = "v1";
+
+info (
+  title:  "Checkout API"
+  desc:   "Checkout service for processing orders and payments"
+  author: "xyp"
+  email:  "870255728@qq.com"
+)
+
+type (
+  // 地址信息
+  Address {
+    StreetAddress string `json:"streetAddress"`
+    City          string `json:"city"`
+    State         string `json:"state"`
+    Country       string `json:"country"`
+    ZipCode       string `json:"zipCode"`
+  }
+
+  // 信用卡信息
+  CreditCardInfo {
+    CreditCardNumber       string `json:"creditCardNumber"`
+    CreditCardCvv          int32  `json:"creditCardCvv"`
+    CreditCardExpirationYear  int32  `json:"creditCardExpirationYear"`
+    CreditCardExpirationMonth int32  `json:"creditCardExpirationMonth"`
+  }
+
+  // 结账请求
+  CheckoutRequest {
+    UserId    uint32        `json:"userId"`
+    Firstname string        `json:"firstname"`
+    Lastname  string        `json:"lastname"`
+    Email     string        `json:"email"`
+    Address   Address       `json:"address"`
+    CreditCard CreditCardInfo `json:"creditCard"`
+  }
+
+  // 结账响应
+  CheckoutResponse {
+    OrderId       string `json:"orderId"`
+    TransactionId string `json:"transactionId"`
+  }
+)
+
+service Checkout {
+  @handler Checkout
+  post /api/checkout (CheckoutRequest) returns (CheckoutResponse)
+}

@@ -1,0 +1,46 @@
+syntax = "v1"
+
+info (
+	title:  "Cart API"
+	desc:   "购物车 API"
+	author: "“xyp”"
+	email:  "870255728@qq.com"
+)
+
+type (
+	CartItem {
+		ProductId uint32 `json:"product_id"`
+		Quantity  int32  `json:"quantity"`
+	}
+	AddItemReq {
+		UserId uint32   `json:"user_id"`
+		Item   CartItem `json:"item"`
+	}
+	AddItemResp  {}
+	EmptyCartReq {
+		UserId uint32 `json:"user_id"`
+	}
+	EmptyCartResp  {}
+	GetCartReq {
+		UserId uint32 `json:"user_id"`
+	}
+	GetCartResp {
+		Cart Cart `json:"cart"`
+	}
+	Cart {
+		UserId uint32     `json:"user_id"`
+		Items  []CartItem `json:"items"`
+	}
+)
+
+service CartService {
+	@handler AddItem
+	post /api/cart/add (AddItemReq) returns (AddItemResp)
+
+	@handler GetCart
+	get /api/cart/get (GetCartReq) returns (GetCartResp)
+
+	@handler EmptyCart
+	post /api/cart/empty (EmptyCartReq) returns (EmptyCartResp)
+}
+

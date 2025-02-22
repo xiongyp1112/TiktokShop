@@ -1,0 +1,58 @@
+syntax = "v1"
+
+info (
+	title:  "Product API"
+	desc:   "Product Catalog Service API"
+	author: "Your Name"
+	email:  "your_email@example.com"
+)
+
+type (
+	// 商品信息
+	Product {
+		Id          uint32   `json:"id"`
+		Name        string   `json:"name"`
+		Description string   `json:"description"`
+		Picture     string   `json:"picture"`
+		Price       float64  `json:"price"`
+		Categories  []string `json:"categories"`
+	}
+	// 获取商品列表请求
+	ListProductsReq {
+		Page         int32  `json:"page"`
+		PageSize     int64  `json:"pageSize"`
+		CategoryName string `json:"categoryName"`
+	}
+	// 获取商品列表响应
+	ListProductsResp {
+		Products []Product `json:"products"`
+	}
+	// 获取单个商品请求
+	GetProductReq {
+		Id uint32 `path:"id"`
+	}
+	// 获取单个商品响应
+	GetProductResp {
+		Product Product `json:"product"`
+	}
+	// 搜索商品请求
+	SearchProductsReq {
+		Query string `json:"query"`
+	}
+	// 搜索商品响应
+	SearchProductsResp {
+		Results []Product `json:"results"`
+	}
+)
+
+service Product {
+	@handler ListProducts
+	get /api/products (ListProductsReq) returns (ListProductsResp)
+
+	@handler GetProduct
+	get /api/product/:id (GetProductReq) returns (GetProductResp)
+
+	@handler SearchProducts
+	get /api/products/search (SearchProductsReq) returns (SearchProductsResp)
+}
+

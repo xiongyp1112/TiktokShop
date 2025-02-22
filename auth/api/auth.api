@@ -1,0 +1,32 @@
+syntax = "v1"
+
+info (
+	title:  "auth_api"
+	desc:   "Auth Service API"
+	author: "“xyp”"
+	email:  "870255728@qq.com"
+)
+
+type (
+	DeliverTokenRequest {
+		UserId int32 `json:"userId"`
+	}
+	DeliverTokenResponse {
+		Token string `json:"token"`
+	}
+	VerifyTokenRequest {
+		Token string `json:"token"`
+	}
+	VerifyTokenResponse {
+		Res bool `json:"res"`
+	}
+)
+
+service Auth {
+	@handler DeliverToken
+	post /api/auth/deliver (DeliverTokenRequest) returns (DeliverTokenResponse)
+
+	@handler VerifyToken
+	post /api/auth/verify (VerifyTokenRequest) returns (VerifyTokenResponse)
+}
+
